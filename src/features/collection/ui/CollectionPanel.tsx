@@ -1,7 +1,7 @@
 import { Heart, Download, ArrowUpRight } from "lucide-react";
 import type { GalleryDocument } from "../../../shared/types";
 import { artworkById } from "../../../shared/catalog";
-import { recapStats, createRecap } from "../lib/recap";
+import { recapStats, createRecap, finishLabel } from "../lib/recap";
 import { downloadRecap } from "../lib/download";
 export function CollectionPanel({
   document,
@@ -27,6 +27,12 @@ export function CollectionPanel({
           <strong>{stats.saved}</strong>已收藏
         </span>
         <span>
+          <strong>{stats.listened}</strong>已听完
+        </span>
+        <span>
+          <strong>{stats.read}</strong>已阅读
+        </span>
+        <span>
           <strong>{Math.floor(stats.seconds / 60)}′</strong>停留时长
         </span>
       </div>
@@ -49,6 +55,11 @@ export function CollectionPanel({
               <small>
                 {a.artist} · {a.year}
               </small>
+              {finishLabel(document.finished[id]) && (
+                <small className="finish-mark">
+                  ✓ {finishLabel(document.finished[id])}
+                </small>
+              )}
               <textarea
                 aria-label={"感想-" + a.title}
                 placeholder="写下此刻的感受…"

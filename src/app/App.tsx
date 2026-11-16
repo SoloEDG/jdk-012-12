@@ -296,9 +296,14 @@ export default function App() {
         state={g.narration.state}
         caption={g.narration.caption}
         supported={g.narration.supported}
+        done={g.narration.done}
+        segmentIndex={g.narration.segmentIndex}
+        segmentCount={g.narration.segmentCount}
         onToggle={g.narration.toggle}
         onSeek={g.narration.seek}
         onRate={g.narration.rate}
+        onReadNext={g.narration.readNext}
+        onReadPrev={g.narration.readPrev}
       />
       {(mapOpen || help) && (
         <div

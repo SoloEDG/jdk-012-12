@@ -20,10 +20,12 @@ export type Route = {
   stops: string[];
 };
 export type Visit = { id: string; seconds: number; at: number };
+export type FinishMode = "listened" | "read";
 export type GalleryDocument = {
   favorites: string[];
   visits: Visit[];
   notes: Record<string, string>;
+  finished: Record<string, FinishMode>;
 };
 export type TourState = {
   routeId: string | null;

@@ -10,8 +10,11 @@ export function useGallery() {
   const tour = useTour();
   const collection = useCollection();
   const walker = useWalker(catalog.observe);
-  const narration = useNarration(() => {
-    if (tour.state.phase === "listening") tour.next();
+  const narration = useNarration((id, mode) => {
+    // 记录真实完成的讲解（收听或阅读），空白等待不会触发这里
+    collection.finish(id, mode);
+    // 导览只在当前目标作品真正讲完时前进，其它作品的结束事件不影响导览
+    if (tour.state.phase === "listening" && tour.target === id) tour.next();
   });
   const go = (id: string) => {
     const a = artworkById(id);

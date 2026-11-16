@@ -4,6 +4,7 @@ export const emptyDocument = (): GalleryDocument => ({
   favorites: [],
   visits: [],
   notes: {},
+  finished: {},
 });
 export function loadDocument(): GalleryDocument {
   try {
@@ -20,6 +21,15 @@ export function loadDocument(): GalleryDocument {
           )
         : [],
       notes: typeof d.notes === "object" && d.notes ? d.notes : {},
+      finished:
+        typeof d.finished === "object" && d.finished
+          ? Object.fromEntries(
+              Object.entries(d.finished as Record<string, unknown>).filter(
+                (e): e is [string, GalleryDocument["finished"][string]] =>
+                  e[1] === "listened" || e[1] === "read",
+              ),
+            )
+          : {},
     };
   } catch {
     return emptyDocument();

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { loadDocument, saveDocument } from "../../../shared/storage";
 import { artworkById } from "../../../shared/catalog";
+import type { FinishMode } from "../../../shared/types";
 export function useCollection() {
   const [document, setDocument] = useState(loadDocument);
   const [storageError, setStorageError] = useState(false);
@@ -32,6 +33,18 @@ export function useCollection() {
             : [...d.visits, { id, seconds, at: Date.now() }],
         };
       });
+    },
+    // 只在真正播完语音或逐段读完后调用，空白等待不会被记为完成
+    finish: (id: string, mode: FinishMode) => {
+      if (!artworkById(id)) return;
+      setDocument((d) => ({
+        ...d,
+        finished: {
+          ...d.finished,
+          // 已听完后又阅读，不覆盖“收听完成”的记录
+          [id]: d.finished[id] === "listened" ? "listened" : mode,
+        },
+      }));
     },
   };
 }
